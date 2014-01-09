@@ -1,5 +1,6 @@
 package com.example.grid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,10 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
 	private GridView gridView;
-	private RelativeLayout relativeLayout;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +28,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		gridView = (GridView) findViewById(R.id.grid);
-		relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 		gridView.setAdapter(new ImageAdapter(this));
-		
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -62,14 +61,46 @@ public class MainActivity extends Activity {
     			v.startAnimation(animation);
 //    			v.setVisibility(View.INVISIBLE);
 //    			v.setEnabled(false);
-    			
-    			Intent i = new Intent(MainActivity.this, SingleActivity.class);
-    			i.putExtra("id", position);
+    			v.setId(View.generateViewId());
+    			Intent i = new Intent(MainActivity.this, SingleTextViewActivity.class);
+    			i.putExtra("imageId", v.getId());
+    			i.putExtra("position", position);
     			startActivity(i);
 			}
 		});
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		Intent intent = getIntent();
+		int imageId = intent.getIntExtra("imageId", 0);
+		String desc = intent.getStringExtra("desc");
+		
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);  
+//		layoutParams.topMargin = ivId;
+//		layoutParams.bottomMargin = ivId;
+//		layoutParams.leftMargin = ivId;
+//		layoutParams.rightMargin = ivId;
+		layoutParams.setMargins(1, 1, 1, 1);
+		
+		layoutParams.addRule(RelativeLayout.ALIGN_TOP, imageId);
+		layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, imageId);
+		layoutParams.addRule(RelativeLayout.ALIGN_LEFT, imageId);
+		layoutParams.addRule(RelativeLayout.ALIGN_RIGHT, imageId);
+		
+		TextView tv = new TextView(this);
+		tv.setLayoutParams(layoutParams);
+		tv.setGravity(Gravity.CENTER);
+		tv.setBackgroundColor(Color.RED);
+		tv.setText(desc);
+		
+		//not support
+//		gridView.addView(tv, 1);
+	}
+	
 	private void constructTextView(final View iv){
 		int ivId = iv.getId();
 		System.out.println("view.getId --------> " + ivId);
@@ -91,7 +122,6 @@ public class MainActivity extends Activity {
 		tv.setBackgroundColor(Color.RED);
 		tv.setText("Íò¼ýÆë·¢£¡");
 		
-		relativeLayout.addView(tv);
 //		gridView.addView(tv);
 		
 	}

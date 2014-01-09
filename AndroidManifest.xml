@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.grid.SingleActivity"></activity>
+        <activity android:name="com.example.grid.SingleTextViewActivity"></activity>
+        
     </application>
 
 </manifest>

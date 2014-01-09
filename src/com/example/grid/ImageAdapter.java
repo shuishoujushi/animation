@@ -64,7 +64,7 @@ public class ImageAdapter extends BaseAdapter {
 		if(convertView == null){
 			imageView = new ImageView(context);
 			imageView.setId(View.generateViewId());
-			imageView.setLayoutParams(new GridView.LayoutParams(85, 105));
+			imageView.setLayoutParams(new GridView.LayoutParams(100, 130));
 			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 			imageView.setPadding(3, 3, 3, 3);
 			imageView.setBackgroundColor(Color.BLUE);
